@@ -122,11 +122,11 @@ export default function SearchDemo() {
         </div>
         <div className="result-card count-result">
           <div style={{ fontSize: '2rem', marginBottom: '10px' }}>{data.count?.toLocaleString()}</div>
-          <div style={{ color: '#6b7280' }}>
-            Firms with {data.filters?.op} {data.filters?.n} {data.filters?.client_column ? 'clients' : 'total clients'}
-            {data.filters?.city ? ` in ${data.filters.city}` : ''}
-            {data.filters?.state ? ` in ${data.filters.state}` : ''}
-          </div>
+                     <div style={{ color: '#6b7280' }}>
+             Firms with {data.filters?.op as string} {data.filters?.n as string} {data.filters?.client_column ? 'clients' : 'total clients'}
+             {data.filters?.city ? ` in ${data.filters.city as string}` : ''}
+             {data.filters?.state ? ` in ${data.filters.state as string}` : ''}
+           </div>
         </div>
       </div>
     )
@@ -162,11 +162,11 @@ export default function SearchDemo() {
         
         <div className="filters-info">
           <strong>Filters Applied:</strong><br />
-          • Column: {getColumnName(data.filters?.column)}<br />
-          • Operator: {data.filters?.op}<br />
-          • Value: {formatAum(data.filters?.value)}<br />
-          {data.filters?.state ? `• State: ${data.filters.state}<br />` : ''}
-          {data.filters?.city ? `• City: ${data.filters.city}<br />` : ''}
+                     • Column: {getColumnName(data.filters?.column as string)}<br />
+           • Operator: {data.filters?.op as string}<br />
+           • Value: {formatAum(data.filters?.value as number)}<br />
+           {data.filters?.state ? `• State: ${data.filters.state as string}<br />` : ''}
+           {data.filters?.city ? `• City: ${data.filters.city as string}<br />` : ''}
           • Results: {data.count} firms found
         </div>
 
