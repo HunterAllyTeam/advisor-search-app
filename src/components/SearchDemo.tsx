@@ -180,7 +180,7 @@ export default function SearchDemo() {
               </div>
               <div className="firm-location">{r.City as string || 'N/A'}, {r.State as string || 'N/A'}</div>
               <div className="aum-value">AUM: {formatAum(r.aum as number)}</div>
-              {r.WebAddr && <div className="website"><a href={r.WebAddr as string} target="_blank" rel="noopener noreferrer">{r.WebAddr as string}</a></div>}
+                             {(r.WebAddr as string) && <div className="website"><a href={r.WebAddr as string} target="_blank" rel="noopener noreferrer">{r.WebAddr as string}</a></div>}
             </div>
           )
         })}
@@ -238,8 +238,8 @@ export default function SearchDemo() {
                 </div>
               </div>
               <div className="firm-contact">
-                {r.PhNb && <div className="phone">📞 {r.PhNb as string}</div>}
-                {r.WebAddr && <div className="website">🌐 <a href={r.WebAddr as string} target="_blank" rel="noopener noreferrer">{r.WebAddr as string}</a></div>}
+                                 {(r.PhNb as string) && <div className="phone">📞 {r.PhNb as string}</div>}
+                 {(r.WebAddr as string) && <div className="website">🌐 <a href={r.WebAddr as string} target="_blank" rel="noopener noreferrer">{r.WebAddr as string}</a></div>}
                 {r.emails && Array.isArray(r.emails) ? 
                   <div className="emails">📧 {(r.emails as string[]).map((email: string, i: number) => <a key={i} href={`mailto:${email}`}>{email}</a>).join(', ')}</div> : 
                   <div className="emails">📧 No emails found</div>
