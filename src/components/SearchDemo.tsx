@@ -9,9 +9,9 @@ interface SearchResult {
   intent?: string
   kind?: string
   count?: number
-  rows?: any[]
-  results?: any[]
-  filters?: any
+  rows?: unknown[]
+  results?: unknown[]
+  filters?: Record<string, unknown>
   error?: string
   state?: string
   city?: string
@@ -34,10 +34,10 @@ export default function SearchDemo() {
     setSuccess('')
   }
 
-  const showSuccess = (message: string) => {
-    setSuccess(message)
-    setError('')
-  }
+  // const showSuccess = (message: string) => {
+  //   setSuccess(message)
+  //   setError('')
+  // }
 
   const hideMessages = () => {
     setError('')
@@ -91,21 +91,24 @@ export default function SearchDemo() {
             <div className="stat-label">City</div>
           </div>
         </div>
-        {data.results?.map((result: any, index: number) => (
-          <div key={index} className="result-card email-result">
-            <div className="firm-info">
-              <div className="firm-details">
-                <div className="firm-name">{result.firm_name}</div>
-                <div className="firm-location">{result.city}, {result.state}</div>
-              </div>
-              <div className="email-info">
-                <a href={`mailto:${result.email}`} className="email-address">{result.email}</a>
-                <div className="source-url">Source: {result.source_url}</div>
-              </div>
-            </div>
-            <div className="result-crd">CRD: {result.firm_crd_number}</div>
-          </div>
-        ))}
+                 {data.results?.map((result: unknown, index: number) => {
+           const r = result as Record<string, unknown>
+           return (
+                     <div key={index} className="result-card email-result">
+             <div className="firm-info">
+               <div className="firm-details">
+                 <div className="firm-name">{r.firm_name as string}</div>
+                 <div className="firm-location">{r.city as string}, {r.state as string}</div>
+               </div>
+               <div className="email-info">
+                 <a href={`mailto:${r.email as string}`} className="email-address">{r.email as string}</a>
+                 <div className="source-url">Source: {r.source_url as string}</div>
+               </div>
+             </div>
+             <div className="result-crd">CRD: {r.firm_crd_number as string}</div>
+           </div>
+         )
+       })}
       </div>
     )
   }
@@ -167,17 +170,20 @@ export default function SearchDemo() {
           • Results: {data.count} firms found
         </div>
 
-        {data.rows?.map((result: any, index: number) => (
-          <div key={index} className="result-card aum-result">
-            <div className="result-header">
-              <div className="firm-name">{result.BusNm}</div>
-              <div className="result-crd">CRD: {result.FirmCrdNb}</div>
+        {data.rows?.map((result: unknown, index: number) => {
+          const r = result as Record<string, unknown>
+          return (
+            <div key={index} className="result-card aum-result">
+              <div className="result-header">
+                <div className="firm-name">{r.BusNm as string}</div>
+                <div className="result-crd">CRD: {r.FirmCrdNb as string}</div>
+              </div>
+              <div className="firm-location">{r.City as string || 'N/A'}, {r.State as string || 'N/A'}</div>
+              <div className="aum-value">AUM: {formatAum(r.aum as number)}</div>
+              {r.WebAddr && <div className="website"><a href={r.WebAddr as string} target="_blank" rel="noopener noreferrer">{r.WebAddr as string}</a></div>}
             </div>
-            <div className="firm-location">{result.City || 'N/A'}, {result.State || 'N/A'}</div>
-            <div className="aum-value">AUM: {formatAum(result.aum)}</div>
-            {result.WebAddr && <div className="website"><a href={result.WebAddr} target="_blank" rel="noopener noreferrer">{result.WebAddr}</a></div>}
-          </div>
-        ))}
+          )
+        })}
       </div>
     )
   }
@@ -204,46 +210,49 @@ export default function SearchDemo() {
         </div>
         
         <div className="filters-info">
-          <strong>Search Term:</strong> "{data.term}"<br />
+          <strong>Search Term:</strong> &quot;{data.term}&quot;<br />
           <strong>Results:</strong> {data.count} firms found
         </div>
 
-        {data.rows?.map((result: any, index: number) => (
-          <div key={index} className="result-card firm-lookup-result">
-            <div className="result-header">
-              <div className="firm-name">{result.BusNm}</div>
-              <div className="result-crd">CRD: {result.FirmCrdNb}</div>
-            </div>
-            <div className="firm-details">
-              <div className="firm-location">{result.City || 'N/A'}, {result.State || 'N/A'}</div>
-              <div className="firm-legal">{result.LegalNm}</div>
-              <div className="firm-org">{result.OrgFormNm}</div>
-            </div>
-            <div className="firm-stats">
-              <div className="stat-item">
-                <span className="stat-label">Total Clients:</span>
-                <span className="stat-value">{formatClients(result.total_clients)}</span>
+        {data.rows?.map((result: unknown, index: number) => {
+          const r = result as Record<string, unknown>
+          return (
+            <div key={index} className="result-card firm-lookup-result">
+              <div className="result-header">
+                <div className="firm-name">{r.BusNm as string}</div>
+                <div className="result-crd">CRD: {r.FirmCrdNb as string}</div>
               </div>
-              <div className="stat-item">
-                <span className="stat-label">Total AUM:</span>
-                <span className="stat-value">{formatAum(result.total_reg_aum)}</span>
+              <div className="firm-details">
+                <div className="firm-location">{r.City as string || 'N/A'}, {r.State as string || 'N/A'}</div>
+                <div className="firm-legal">{r.LegalNm as string}</div>
+                <div className="firm-org">{r.OrgFormNm as string}</div>
+              </div>
+              <div className="firm-stats">
+                <div className="stat-item">
+                  <span className="stat-label">Total Clients:</span>
+                  <span className="stat-value">{formatClients(r.total_clients as number)}</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Total AUM:</span>
+                  <span className="stat-value">{formatAum(r.total_reg_aum as number)}</span>
+                </div>
+              </div>
+              <div className="firm-contact">
+                {r.PhNb && <div className="phone">📞 {r.PhNb as string}</div>}
+                {r.WebAddr && <div className="website">🌐 <a href={r.WebAddr as string} target="_blank" rel="noopener noreferrer">{r.WebAddr as string}</a></div>}
+                {r.emails && Array.isArray(r.emails) ? 
+                  <div className="emails">📧 {(r.emails as string[]).map((email: string, i: number) => <a key={i} href={`mailto:${email}`}>{email}</a>).join(', ')}</div> : 
+                  <div className="emails">📧 No emails found</div>
+                }
               </div>
             </div>
-            <div className="firm-contact">
-              {result.PhNb && <div className="phone">📞 {result.PhNb}</div>}
-              {result.WebAddr && <div className="website">🌐 <a href={result.WebAddr} target="_blank" rel="noopener noreferrer">{result.WebAddr}</a></div>}
-              {result.emails && result.emails.length > 0 ? 
-                <div className="emails">📧 {result.emails.map((email: string, i: number) => <a key={i} href={`mailto:${email}`}>{email}</a>).join(', ')}</div> : 
-                <div className="emails">📧 No emails found</div>
-              }
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     )
   }
 
-  const displayVectorResults = (results: any[]) => {
+  const displayVectorResults = (results: unknown[]) => {
     if (results.length === 0) {
       return <p style={{ textAlign: 'center', color: '#6b7280', padding: '40px' }}>No results found. Try a different search term.</p>
     }
@@ -254,16 +263,19 @@ export default function SearchDemo() {
           Found {results.length} results
           <span className="intent-badge">Vector Search</span>
         </div>
-        {results.map((result: any, index: number) => (
-          <div key={index} className="result-card">
-            <div className="result-header">
-              <a href={result.url} target="_blank" rel="noopener noreferrer" className="result-url">{result.url}</a>
-              <span className="result-crd">CRD: {result.firm_crd_number}</span>
+        {results.map((result: unknown, index: number) => {
+          const r = result as Record<string, unknown>
+          return (
+                      <div key={index} className="result-card">
+              <div className="result-header">
+                <a href={r.url as string} target="_blank" rel="noopener noreferrer" className="result-url">{r.url as string}</a>
+                <span className="result-crd">CRD: {r.firm_crd_number as string}</span>
+              </div>
+              <div className="result-content">{r.content_text as string}</div>
+              <div className="result-similarity">Similarity: {((r.similarity as number) * 100).toFixed(1)}%</div>
             </div>
-            <div className="result-content">{result.content_text}</div>
-            <div className="result-similarity">Similarity: {(result.similarity * 100).toFixed(1)}%</div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     )
   }
