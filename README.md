@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Intelligent Financial Advisor Search
 
-## Getting Started
+A powerful search interface for financial advisors with natural language query capabilities.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Email Queries**: Find firm emails by state/city
+- **AUM Filtering**: Search firms by Assets Under Management with various operators
+- **Client Count Analysis**: Filter firms by client types and counts
+- **Firm Lookup**: Fuzzy search for specific firms
+- **Vector Search**: Semantic search through website content
+- **Natural Language Processing**: Ask questions in plain English
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Examples
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Email Queries
+- "emails of firms in California"
+- "firm emails in Miami FL"
+- "emails of firms in Texas"
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### AUM Queries
+- "firms in montana with aum under 20 million"
+- "firms with discretionary AUM over 100 million"
+- "firms with HNW AUM over 50 billion"
 
-## Learn More
+### Client Count Queries
+- "firms with more than 100 individual clients"
+- "firms with HNW clients equal to 0"
+- "firms in NY with pension clients over 50"
 
-To learn more about Next.js, take a look at the following resources:
+### Firm Lookup
+- "montebello"
+- "find firm goldman"
+- "morgan stanley"
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Vector Search
+- "401k rollover"
+- "estate planning"
+- "retirement planning"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Technology
 
-## Deploy on Vercel
+- **Frontend**: Pure HTML/CSS/JavaScript
+- **Backend**: Supabase Edge Functions
+- **Database**: PostgreSQL with vector search
+- **Deployment**: Vercel (Static Site)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Development
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This is a static HTML application that can be served from any web server. Simply open `index.html` in a browser to run locally.
+
+## Deployment
+
+The application is automatically deployed to Vercel on every push to the main branch.
+
+## API
+
+The search interface connects to a Supabase Edge Function that provides natural language query processing and database access.
