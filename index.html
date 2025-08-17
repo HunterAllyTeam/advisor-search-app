@@ -441,20 +441,21 @@
             </div>
 
             <div class="example-category">
-                <h3>Firm Lookup</h3>
+                <h3>Firm Lookup & Services</h3>
                 <div class="examples">
+                    <div class="example-tag" onclick="setQueryValue('401k rollover')">401k rollover</div>
+                    <div class="example-tag" onclick="setQueryValue('retirement planning')">retirement planning</div>
                     <div class="example-tag" onclick="setQueryValue('montebello')">montebello</div>
                     <div class="example-tag" onclick="setQueryValue('find firm goldman')">find firm goldman</div>
-                    <div class="example-tag" onclick="setQueryValue('morgan stanley')">morgan stanley</div>
                 </div>
             </div>
 
             <div class="example-category">
-                <h3>Vector Search</h3>
+                <h3>Service Search</h3>
                 <div class="examples">
-                    <div class="example-tag" onclick="setQueryValue('401k rollover')">401k rollover</div>
+                    <div class="example-tag" onclick="setQueryValue('fee-only fiduciary')">fee-only fiduciary</div>
                     <div class="example-tag" onclick="setQueryValue('estate planning')">estate planning</div>
-                    <div class="example-tag" onclick="setQueryValue('retirement planning')">retirement planning</div>
+                    <div class="example-tag" onclick="setQueryValue('wealth management')">wealth management</div>
                 </div>
             </div>
         </div>
@@ -523,7 +524,7 @@
                 return displayEmailResults(data);
             } else if (data.intent === 'aum_filter') {
                 return displayAumResults(data);
-            } else if (data.intent === 'firm_lookup') {
+            } else if (data.intent === 'firm_lookup' || data.intent === 'firm_lookup_fallback') {
                 return displayFirmLookupResults(data);
             } else if (data.kind === 'count_firms_by_total_clients' || data.kind === 'count_firms_by_clients') {
                 return displayCountResults(data);
