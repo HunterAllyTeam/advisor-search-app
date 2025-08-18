@@ -520,26 +520,36 @@
         }
 
         function displayResults(data) {
-            if (data.intent === 'emails_by_region') {
+            console.log('Received data:', data);
+            console.log('Data intent:', data.intent);
+            
+            if (data.intent === 'emails_by_region' || data.intent === 'email_search_regional' || data.intent === 'email_search_global') {
                 return displayEmailResults(data);
             } else if (data.intent === 'aum_filter') {
                 return displayAumResults(data);
             } else if (data.intent === 'firm_lookup' || data.intent === 'firm_lookup_fallback') {
+                return displayFirmLookupResults(data);
+            } else if (data.intent === 'niche_search') {
                 return displayFirmLookupResults(data);
             } else if (data.kind === 'count_firms_by_total_clients' || data.kind === 'count_firms_by_clients') {
                 return displayCountResults(data);
             } else if (data.results && Array.isArray(data.results)) {
                 return displayVectorResults(data.results);
             } else {
+                console.log('Falling back to generic results');
                 return displayGenericResults(data);
             }
         }
 
         function displayEmailResults(data) {
+            const isGlobal = data.intent === 'email_search_global';
+            const stateDisplay = data.parameters?.state || data.state || (isGlobal ? 'All States' : 'N/A');
+            const cityDisplay = data.parameters?.city || data.city || (isGlobal ? 'All Cities' : 'All Cities');
+            
             return `
                 <div>
                     <div class="results-header">
-                        Email Results
+                        ${isGlobal ? 'Global Email Results' : 'Regional Email Results'}
                         <span class="intent-badge">${data.intent}</span>
                     </div>
                     <div class="stats">
@@ -548,11 +558,11 @@
                             <div class="stat-label">Emails Found</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value">${data.state || 'N/A'}</div>
+                            <div class="stat-value">${stateDisplay}</div>
                             <div class="stat-label">State</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value">${data.city || 'All Cities'}</div>
+                            <div class="stat-value">${cityDisplay}</div>
                             <div class="stat-label">City</div>
                         </div>
                     </div>
@@ -561,7 +571,7 @@
                             <div class="firm-info">
                                 <div class="firm-details">
                                     <div class="firm-name">${result.firm_name}</div>
-                                    <div class="firm-location">${result.city}, ${result.state}</div>
+                                    <div class="firm-location">${result.city || 'N/A'}, ${result.state || 'N/A'}</div>
                                 </div>
                                 <div class="email-info">
                                     <a href="mailto:${result.email}" class="email-address">${result.email}</a>
@@ -661,16 +671,21 @@
                 return value.toLocaleString();
             };
 
+            const isNiche = data.intent === 'niche_search';
+            const searchTerm = data.term || data.search_terms || data.query || 'N/A';
+            
             return `
                 <div>
                     <div class="results-header">
-                        Firm Lookup Results
+                        ${isNiche ? 'Niche Search Results' : 'Firm Lookup Results'}
                         <span class="intent-badge">${data.intent}</span>
                     </div>
                     
                     <div class="filters-info">
-                        <strong>Search Term:</strong> "${data.term}"<br>
+                        <strong>Search Term:</strong> "${searchTerm}"<br>
+                        ${isNiche && data.parameters?.demographic ? `<strong>Target Demographic:</strong> ${data.parameters.demographic}<br>` : ''}
                         <strong>Results:</strong> ${data.count} firms found
+                        ${data.note ? `<br><em style="color: #6b7280;">${data.note}</em>` : ''}
                     </div>
 
                     ${data.rows?.map(result => `
